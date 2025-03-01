@@ -17,10 +17,20 @@ export const PostForm: React.FC<PostFormProps> = ({ onPostAdded }) => {
       text: postText,
       createdAt: new Date().toISOString(),
       type: 'normal',
+      userId: 0,
     };
-    const savedPosts = JSON.parse(localStorage.getItem('posts') || '[]');
-    savedPosts.unshift(newPost);
-    localStorage.setItem('posts', JSON.stringify(savedPosts));
+
+    const users = JSON.parse(localStorage.getItem('mock') || '[]');
+
+    const user = users.find((user: { id: number; posts: { id: number; text: string; createdAt: string; type: string; userId: number }[]; postsCount: number }) => user.id === 2);
+
+    if (user) {
+      user.posts.unshift(newPost);
+      user.postsCount += 1;
+
+      localStorage.setItem('mock', JSON.stringify(users));
+    }
+
     onPostAdded();
     setPostText('');
   };
