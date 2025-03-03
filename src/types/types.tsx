@@ -16,7 +16,6 @@ export interface User {
   joinedDate: string;
   followersCount: number;
   followingCount: number;
-  postsCount: number;
   posts: Post[];
   followers: User[];
   following: User[];

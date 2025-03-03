@@ -6,7 +6,6 @@ export const mock = [
     joinedDate: "March 25, 2021",
     followersCount: 2,
     followingCount: 1,
-    postsCount: 3,
     posts: [
       {
         createdAt: "2025-02-01T17:01:41.756Z",
@@ -66,7 +65,6 @@ export const mock = [
     joinedDate: "July 11, 2011",
     followersCount: 1,
     followingCount: 2,
-    postsCount: 2,
     posts: [
       {
         createdAt: "2025-02-22T17:01:41.756Z",
@@ -110,7 +108,6 @@ export const mock = [
     joinedDate: "September 20, 2024",
     followersCount: 2,
     followingCount: 2,
-    postsCount: 2,
     posts: [
       {
         createdAt: "2025-02-28T17:01:41.756Z",

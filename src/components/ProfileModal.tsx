@@ -9,7 +9,11 @@ interface ProfileModalProps {
   user: User;
 }
 
-const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user }) => {
+const ProfileModal: React.FC<ProfileModalProps> = ({
+  isOpen,
+  onClose,
+  user,
+}) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -19,7 +23,9 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user }) =>
             <Dialog.Title className="text-lg font-semibold text-white">
               {user.nick || "Nick is unavailable"}
             </Dialog.Title>
-            <p className="text-gray-400">@{user.username || "Username is unavailable"}</p>
+            <p className="text-gray-400">
+              @{user.username || "Username is unavailable"}
+            </p>
             <p className="text-sm text-gray-500">
               Joined in: {user.joinedDate || "Joined Date is unavailable"}
             </p>
@@ -39,20 +45,29 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, user }) =>
               </p>
               <p>
                 <span className="font-semibold">
-                  {user.postsCount || "Post count is unavailable"}
+                  {user.posts.length || "Post count is unavailable"}
                 </span>{" "}
                 Posts
               </p>
             </div>
 
             <div className="mt-4 max-h-[65vh] overflow-y-auto space-y-4 p-2">
-                {user.posts && user.posts.length > 0 ? (
+              {user.posts && user.posts.length > 0 ? (
                 user.posts.map((post) => {
                   return (
-                  <Post key={post.id} post={post} username={user.username} nick={user.nick} onUserClick={() => {}} />
+                    <Post
+                      key={post.id}
+                      post={post}
+                      username={user.username}
+                      nick={user.nick}
+                      onUserClick={() => {}}
+                      onRepostClick={() => {}}
+                      onQuoteClick={() => {}}
+                      isProfilePage={true}
+                    />
                   );
                 })
-                ) : (
+              ) : (
                 <p className="text-gray-400">No posts available</p>
               )}
             </div>
