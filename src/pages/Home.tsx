@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { PostForm } from "../components/PostForm";
 import Post from "../components/Post";
 import ProfileModal from "../components/ProfileModal";
@@ -8,6 +9,8 @@ import { storeMock } from "../utils/mock";
 const POSTS_LIMIT = 10;
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const { userId } = useParams();
   const [, setTotalPosts] = useState<number>(0);
   const postsContainerRef = useRef<HTMLDivElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,8 +42,24 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    storeMock();
+    if (!localStorage.getItem("mock")) {
+      storeMock();
+    }
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      const allUsers = JSON.parse(localStorage.getItem("mock") || "[]");
+      const user = allUsers.find((user: User) => user.id === Number(userId));
+
+      if (user) {
+        setSelectedUser(user);
+      }
+    } else {
+      setSelectedUser(null);
+    }
+  }, [userId]);
+
   const handleScroll = useCallback(() => {
     if (!postsContainerRef.current) return;
 
@@ -91,6 +110,14 @@ const Home: React.FC = () => {
       }
     };
   }, [isLoading, handleScroll]);
+  
+  const handleUserClick = (userId: number) => {
+    navigate(`/${userId}`);
+  };
+
+  const closeModal = () => {
+    navigate("/");
+  };
 
   return (
     <>
@@ -105,13 +132,19 @@ const Home: React.FC = () => {
           style={{ maxHeight: "80vh" }}
         >
           {posts.map((post, index) => (
-            <Post key={index} post={post} username={post.username} nick={post.nick} />
+            <Post
+              key={index}
+              post={post}
+              username={post.username}
+              nick={post.nick}
+              onUserClick={handleUserClick}
+            />
           ))}
 
           {selectedUser && (
             <ProfileModal
-              isOpen={Boolean(selectedUser)}
-              onClose={() => setSelectedUser(null)}
+              isOpen={!!userId}
+              onClose={closeModal}
               user={selectedUser}
             />
           )}

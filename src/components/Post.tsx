@@ -6,20 +6,24 @@ interface PostProps {
   post: PostTypes;
   username: string;
   nick: string;
-  // onUserClick: (userId: number) => void;
+  onUserClick: (userId: number) => void;
 }
 
-const Post: React.FC<PostProps> = ({ post }) => {
+const Post: React.FC<PostProps> = ({ post, username, nick, onUserClick }) => {
+  const handleUserClick = (userId: number) => {
+    onUserClick(userId);
+  };
+
   return (
     <div className="bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
       <div className="text-md text-gray-400">
-        <button
-          // onClick={() => onUserClick(post.userId)}
+      <button
+          onClick={() => handleUserClick(post.userId)}
           className="font-bold text-blue-400 hover:underline"
         >
-          {post.username}
+          {username}
         </button>
-        <span className="text-gray-500"> @{post.nick}</span>
+        <span className="text-gray-500"> @{nick}</span>
       </div>
 
       <p className="text-lg text-gray-300">{post.text}</p>

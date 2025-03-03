@@ -22,7 +22,7 @@ export const PostForm: React.FC<PostFormProps> = ({ onPostAdded }) => {
 
     const users = JSON.parse(localStorage.getItem('mock') || '[]');
 
-    const user = users.find((user: { id: number; posts: { id: number; text: string; createdAt: string; type: string; userId: number }[]; postsCount: number }) => user.id === 2);
+    const user = users.find((user: { id: number; posts: { id: number; text: string; createdAt: string; type: string; userId: number }[]; postsCount: number }) => user.id === 0);
 
     if (user) {
       user.posts.unshift(newPost);
