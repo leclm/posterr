@@ -6,6 +6,7 @@ export interface Post {
   type: string;
   username: string;
   nick: string;
+  repost: Post;
 }
 
 export interface User {

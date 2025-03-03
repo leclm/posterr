@@ -16,6 +16,8 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState<PostTypes[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [quotePost, setQuotePost] = useState<PostTypes | null>(null);
+  const [quoteText, setQuoteText] = useState<string>("");
 
   const loadPosts = () => {
     const allUsers = JSON.parse(localStorage.getItem("mock") || "[]");
@@ -110,13 +112,71 @@ const Home: React.FC = () => {
       }
     };
   }, [isLoading, handleScroll]);
-  
+
   const handleUserClick = (userId: number) => {
     navigate(`/${userId}`);
   };
 
-  const closeModal = () => {
-    navigate("/");
+  const handleRepostClick = (postId: number) => {
+    const postToRepost = posts.find((post) => post.id === postId);
+    if (postToRepost) {
+      const newRepost: PostTypes = {
+        id: new Date().getTime(),
+        userId: 0, 
+        text: postToRepost.text,
+        type: "repost",
+        createdAt: new Date().toISOString(),
+        repost: postToRepost,
+        username: "Letícia Lima",
+        nick: "leclm",
+      };
+
+      const allUsers = JSON.parse(localStorage.getItem("mock") || "[]");
+      const userIndex = allUsers.findIndex((user: User) => user.id === 0);
+      if (userIndex !== -1) {
+        allUsers[userIndex].posts.push(newRepost);
+        localStorage.setItem("mock", JSON.stringify(allUsers));
+        loadPosts();
+      }
+    }
+  };
+
+  const handleQuoteClick = (postId: number) => {
+    const postToQuote = posts.find((post) => post.id === postId);
+    if (postToQuote) {
+      setQuotePost(postToQuote); 
+      setQuoteText("");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setQuotePost(null);
+  };
+
+  const handleQuoteSubmit = () => {
+    if (!quoteText || !quotePost) return;
+
+    const newQuotePost: PostTypes = {
+      id: new Date().getTime(),
+      userId: 0,
+      text: quoteText,
+      type: "quote",
+      createdAt: new Date().toISOString(),
+      repost: quotePost,
+      username: "Letícia Lima",
+      nick: "leclm",
+    };
+
+    const allUsers = JSON.parse(localStorage.getItem("mock") || "[]");
+    const userIndex = allUsers.findIndex((user: User) => user.id === 0);
+    if (userIndex !== -1) {
+      allUsers[userIndex].posts.push(newQuotePost);
+      localStorage.setItem("mock", JSON.stringify(allUsers));
+      loadPosts();
+    }
+
+    setQuotePost(null);
+    setQuoteText("");
   };
 
   return (
@@ -138,13 +198,15 @@ const Home: React.FC = () => {
               username={post.username}
               nick={post.nick}
               onUserClick={handleUserClick}
+              onQuoteClick={handleQuoteClick}
+              onRepostClick={handleRepostClick}
             />
           ))}
 
           {selectedUser && (
             <ProfileModal
               isOpen={!!userId}
-              onClose={closeModal}
+              onClose={handleCloseModal}
               user={selectedUser}
             />
           )}
@@ -154,6 +216,36 @@ const Home: React.FC = () => {
           )}
         </div>
       </div>
+
+      {quotePost && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-white text-lg mb-4">Add your quote</h2>
+            <textarea
+              className="w-full p-2 bg-gray-700 text-white rounded"
+              rows={4}
+              value={quoteText}
+              onChange={(e) => setQuoteText(e.target.value)}
+              placeholder="Write something..."
+            />
+            <div className="flex justify-end space-x-2 mt-4">
+              <button
+                onClick={handleCloseModal}
+                className="px-4 py-2 bg-gray-600 text-white rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleQuoteSubmit}
+                className="px-4 py-2 bg-green-500 text-white rounded"
+                disabled={!quoteText}
+              >
+                Quote
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
