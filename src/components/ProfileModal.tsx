@@ -89,10 +89,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="w-full max-w-4xl h-[90vh] bg-gray-800 rounded-lg p-6 shadow-lg overflow-y-auto flex flex-col">
             <Dialog.Title className="text-lg font-semibold text-white">
-              {user.nick || "Nick is unavailable"}
+              {user.username || "Username is unavailable"}
             </Dialog.Title>
             <p className="text-gray-400">
-              @{user.username || "Username is unavailable"}
+              @{user.nick || "Nick is unavailable"}
             </p>
             <p className="text-sm text-gray-500">
               Joined in: {user.joinedDate || "Joined Date is unavailable"}

@@ -11,31 +11,15 @@ export const mock = [
         createdAt: "2025-02-01T17:01:41.756Z",
         id: 10,
         userId: 0,
-        text: "Hello",
+        text: "Hello :)",
         type: "normal",
       },
       {
         createdAt: "2025-02-21T17:01:41.756Z",
         id: 20,
         userId: 0,
-        text: "Helloooo",
+        text: "Hello!",
         type: "normal",
-      },
-      {
-        createdAt: "2025-02-21T17:01:41.756Z",
-        id: 30,
-        userId: 0,
-        text: "quote message",
-        type: "quote",
-        repost:
-        {
-          createdAt: "2025-02-22T17:01:41.756Z",
-          id: 11,
-          userId: 1,
-          text: "Test",
-          type: "normal",
-        },
-
       },
     ],
     followers: [
