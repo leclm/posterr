@@ -4,3 +4,8 @@
   padding: 2rem;
   text-align: center;
 }
+
+/* Assegurando que o modal de quote tenha maior z-index */
+.fixed.z-50 {
+  z-index: 50 !important;
+}

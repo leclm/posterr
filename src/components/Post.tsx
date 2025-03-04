@@ -6,20 +6,20 @@ interface PostProps {
   post: PostTypes;
   username: string;
   nick: string;
-  isProfilePage?: boolean;
   onUserClick: (userId: number) => void;
-  onRepostClick: (postId: number) => void;
-  onQuoteClick: (postId: number) => void;
+  onRepostClick: (postId: number, profileUserId: number) => void;
+  onQuoteClick: (postId: number, profileUserId: number) => void;
+  profileUserId: number;
 }
 
 const Post: React.FC<PostProps> = ({
   post,
   username,
   nick,
-  isProfilePage,
   onUserClick,
   onRepostClick,
   onQuoteClick,
+  profileUserId,
 }) => {
   if (!post) return null;
 
@@ -61,18 +61,18 @@ const Post: React.FC<PostProps> = ({
         <div className="text-sm text-gray-500">
           {new Date(post.createdAt).toLocaleString()} | {post.type} post
         </div>
-        {!isProfilePage && (
+        
           <div className="flex space-x-4 items-center">
             <>
               <button
-                onClick={() => onRepostClick(post.id)}
+                onClick={() => onRepostClick(post.id, profileUserId)}
                 className="flex items-center text-gray-300 hover:text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full"
               >
                 <FaRedo size={15} className="mr-2" />
                 Repost
               </button>
               <button
-                onClick={() => onQuoteClick(post.id)}
+                onClick={() => onQuoteClick(post.id, profileUserId)}
                 className="flex items-center text-gray-300 hover:text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-full"
               >
                 <FaQuoteRight size={15} className="mr-2" />
@@ -80,7 +80,7 @@ const Post: React.FC<PostProps> = ({
               </button>
             </>
           </div>
-        )}
+        
       </div>
     </div>
   );

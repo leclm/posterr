@@ -130,7 +130,7 @@ const Home: React.FC = () => {
     navigate(`/${userId}`);
   };
 
-  const handleRepostClick = (postId: number) => {
+  const handleRepostClick = (postId: number, profileUserId: number) => {
     const users = JSON.parse(localStorage.getItem("mock") || "[]");
     const user = users.find(
       (user: {
@@ -142,7 +142,7 @@ const Home: React.FC = () => {
           type: string;
           userId: number;
         }[];
-      }) => user.id === 0
+      }) => user.id === profileUserId || 0
     );
 
     if (user) {
@@ -159,7 +159,7 @@ const Home: React.FC = () => {
         if (postToRepost) {
           const newRepost: PostTypes = {
             id: new Date().getTime(),
-            userId: 0,
+            userId: profileUserId,
             text: postToRepost.text,
             type: "repost",
             createdAt: new Date().toISOString(),
@@ -176,11 +176,12 @@ const Home: React.FC = () => {
             loadPosts();
           }
         }
+        alert('Repost successful! Return to home page to view!');
       }
     }
   };
 
-  const handleQuoteClick = (postId: number) => {
+  const handleQuoteClick = (postId: number, profileUserId: number) => {
     const users = JSON.parse(localStorage.getItem("mock") || "[]");
     const user = users.find(
       (user: {
@@ -192,7 +193,7 @@ const Home: React.FC = () => {
           type: string;
           userId: number;
         }[];
-      }) => user.id === 0
+      }) => user.id === profileUserId || 0
     );
 
     if (user) {
@@ -287,7 +288,7 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div className="container mx-auto p-4">
-        <PostForm onPostAdded={loadPosts} />
+        <PostForm onPostAdded={loadPosts} profileUserId={0} />
         <div
           ref={postsContainerRef}
           className="flex flex-col space-y-4 mt-4 overflow-y-auto"
@@ -302,6 +303,7 @@ const Home: React.FC = () => {
               onUserClick={handleUserClick}
               onQuoteClick={handleQuoteClick}
               onRepostClick={handleRepostClick}
+              profileUserId={0}
             />
           ))}
 
@@ -310,6 +312,9 @@ const Home: React.FC = () => {
               isOpen={!!userId}
               onClose={handleCloseProfileModal}
               user={selectedUser}
+              onRepostClick={handleRepostClick}
+              onQuoteClick={handleQuoteClick}
+              onNewPost={loadPosts}
             />
           )}
 
@@ -320,7 +325,7 @@ const Home: React.FC = () => {
       </div>
 
       {quotePost && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-white text-lg mb-4">Add your quote</h2>
             <textarea
