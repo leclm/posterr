@@ -9,6 +9,37 @@ import { storeMock } from "../utils/mock";
 const POSTS_LIMIT = 10;
 const MAX_LENGTH = 777;
 
+/**
+ * Home component that displays a list of posts and allows users to filter, repost, and quote posts.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ * 
+ * @example
+ * <Home />
+ * 
+ * @remarks
+ * This component uses several hooks to manage state and side effects:
+ * - `useNavigate` for navigation.
+ * - `useParams` to get the user ID from the URL.
+ * - `useState` for managing various states like total posts, loading state, posts, selected user, quote post, quote text, and filter.
+ * - `useRef` to reference the posts container for scroll handling.
+ * - `useEffect` for loading posts, initializing mock data, and handling user selection.
+ * - `useCallback` for handling scroll events.
+ * 
+ * The component also includes several event handlers:
+ * - `handleScroll` to load more posts when the user scrolls to the bottom.
+ * - `handleUserClick` to navigate to a user's profile.
+ * - `handleRepostClick` to repost a post.
+ * - `handleQuoteClick` to quote a post.
+ * - `handleCloseModal` to close the quote modal.
+ * - `handleQuoteSubmit` to submit a quote.
+ * - `handleCloseProfileModal` to close the profile modal.
+ * - `handleFilterChange` to change the post filter.
+ * - `handleQuoteChange` to handle changes in the quote text area.
+ * 
+ * The component renders a filter button, a post form, a list of posts, and modals for quoting and viewing profiles.
+ */
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { userId } = useParams();

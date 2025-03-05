@@ -5,6 +5,25 @@ interface PostFormProps {
   profileUserId: number;
 }
 
+/**
+ * Component for creating and submitting a new post.
+ *
+ * @component
+ * @param {Object} props - The properties object.
+ * @param {function} props.onPostAdded - Callback function to be called when a post is successfully added.
+ * @param {number} props.profileUserId - The ID of the user profile to which the post will be added.
+ *
+ * @returns {JSX.Element} The rendered PostForm component.
+ *
+ * @example
+ * <PostForm onPostAdded={handlePostAdded} profileUserId={123} />
+ *
+ * @remarks
+ * - The component maintains the state of the post text using the `useState` hook.
+ * - The maximum length of the post text is limited to 777 characters.
+ * - The component checks the number of posts made by the user on the current day and restricts it to a maximum of 5 posts per day.
+ * - The posts are stored in the local storage under the key "mock".
+ */
 export const PostForm: React.FC<PostFormProps> = ({
   onPostAdded,
   profileUserId,
